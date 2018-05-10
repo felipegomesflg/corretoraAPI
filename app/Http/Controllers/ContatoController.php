@@ -3,86 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Contato;
 use App\Http\Requests;
+use App\Contato;
 use App\Http\Resources\Contato as ContatoResource;
-
 
 class ContatoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Empresa $empresas)
+ public function index()
     {
-       
+        return ContatoResource::collection(Contato::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+  
     public function store(Request $request)
     {
-        //
+        //se for put pega registro, senao instacia
+        $dado = $request->isMethod('put') ? Contato::findOrFail($request->id) : new Contato;
+        
+        $dado->nome = $request->input('nome');
+        
+
+        if($dado->save()){
+            return new ContatoResource($dado);
+        }
+        
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function show($id)
     {
-        //
+        $dado = Contato::findOrFail($id);
+        return new ContatoResource($dado);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $dado = Contato::findOrFail($id);
+        if($dado->delete()){
+            return new ContatoResource($dado);
+        }
     }
 }

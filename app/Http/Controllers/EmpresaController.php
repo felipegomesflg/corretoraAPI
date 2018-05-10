@@ -18,7 +18,13 @@ class EmpresaController extends Controller
      */
     public function index()
     {
-        return EmpresaResource::collection(Empresa::all());
+        $empresas = Empresa::all();
+        foreach($empresas as $empresa){
+            $empresa->contato = ContatoItem::where('contatoid',$empresa->contatoid)->get();
+        }
+        
+        
+        return new EmpresaResource($empresa);
     }
 
   
@@ -33,7 +39,7 @@ class EmpresaController extends Controller
         //se for put pega registro, senao instacia
         $empresa = $request->isMethod('put') ? Empresa::findOrFail($request->id) : new Empresa;
         
-
+        
         $empresa->id = $request->input('id');
         $empresa->cnpj = $request->input('cnpj');
         $empresa->razaoSocial = $request->input('razaoSocial');

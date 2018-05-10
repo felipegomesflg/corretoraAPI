@@ -20,11 +20,11 @@ class CreateEmpresasTable extends Migration
             $table->string('nomeFantasia')->nullable();
             $table->string('cep')->nullable();
             $table->string('endereco')->nullable();
-            $table->string('complemento')->nullable();
+            $table->string('complemento')->nullable() ;
             $table->string('numero')->nullable();
             $table->string('estado')->nullable();
             $table->string('cidade')->nullable();
-            $table->boolean('padrao')->nullable($value = true);
+            $table->boolean('padrao')->default(false);
             $table->string('cor')->nullable();
             $table->string('menu')->nullable();
             $table->unsignedInteger('contatoid');
