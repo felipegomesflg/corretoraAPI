@@ -22,8 +22,6 @@ class CreateUsuariosTable extends Migration
             $table->string('cpf')->nullable();
             $table->string('cor')->nullable();
             $table->string('menu')->nullable();
-            $table->string('token',60)->unique();
-            $table->dateTime('tokenDate')->nullable();
             $table->boolean('ativo')->nullable($value = true);
             $table->unsignedInteger('contatoid');
             $table->foreign('contatoid')->references('id')->on('contatos');

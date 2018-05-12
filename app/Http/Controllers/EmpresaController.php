@@ -22,8 +22,6 @@ class EmpresaController extends Controller
         foreach($empresas as $empresa){
             $empresa->contato = ContatoItem::where('contatoid',$empresa->contatoid)->get();
         }
-        
-        
         return new EmpresaResource($empresa);
     }
 
@@ -76,7 +74,7 @@ class EmpresaController extends Controller
         }
 
         $empresa->contatoid = $contato->id; //seta contatoid vindo do post/put do model Contato
-
+        
         if($empresa->save()){
             return new EmpresaResource($empresa);
         }
