@@ -8,6 +8,7 @@ use App\Empresa;
 use App\Contato;
 use App\ContatoItem;
 use App\Http\Resources\Empresa as EmpresaResource;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class EmpresaController extends Controller
 {
@@ -52,6 +53,13 @@ class EmpresaController extends Controller
         $empresa->cor = $request->input('cor');
         $empresa->menu = $request->input('menu');
         $empresa->padrao = $request->input('padrao');
+        $empresa->logo = $request->input('logo');
+
+        if($empresa->logo){
+            $path = 'img/empresa-'.time().".png";
+            Image::make(file_get_contents($empresa->logo))->save($path);    
+            $empresa->logo = 'http://localhost:8000/'.$path;
+        }
         //se for put usa o contatoid
         $empresa->contatoid = $request->isMethod('put') ? $request->input('contatoid') : 0;
         //se for put pega registro, senao instacia

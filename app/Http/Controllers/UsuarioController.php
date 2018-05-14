@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Usuario;
 use App\Contato;
 use App\ContatoItem;
 use App\Http\Resources\Usuario as UsuarioResource;
+use Intervention\Image\ImageManagerStatic as Image;
+
+
 
 class UsuarioController extends Controller
 {
@@ -38,8 +42,15 @@ class UsuarioController extends Controller
         $dado->menu = $request->input('menu');
         $dado->ativo = $request->input('ativo');
         $dado->tipoid = $request->input('tipoid');
+        $dado->api_token = $request->input('tipoid');
         $dado->empresaid = $request->input('empresaid');
-        
+
+
+        if($dado->foto){
+            $path = 'img/usuario-'.time().".png";
+            Image::make(file_get_contents($dado->foto))->save($path);    
+            $dado->foto = 'http://localhost:8000/'.$path;
+        }
         //se for put usa o contatoid
         $dado->contatoid = $request->isMethod('put') ? $request->input('contatoid') : 0;
         //se for put pega registro, senao instacia
@@ -84,4 +95,18 @@ class UsuarioController extends Controller
             return new UsuarioResource($dado);
         }
     }
+
+    public function uploadImages($img)
+   {
+    //    $this->validate($request,[
+    //        'image_name'=>'required|mimes:jpeg,bmp,jpg,png|between:1, 6000',
+    //    ]);
+
+       //$image_name = $request->file('image_name')->getRealPath();;
+
+       Cloudder::upload($img, null);
+
+       return redirect()->back()->with('status', 'Image Uploaded Successfully');
+
+   }
 }

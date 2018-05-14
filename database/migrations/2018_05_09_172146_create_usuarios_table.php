@@ -18,10 +18,11 @@ class CreateUsuariosTable extends Migration
             $table->string('nome')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('senha')->nullable();
-            $table->string('foto')->nullable();
+            $table->string('foto',1000)->nullable();
             $table->string('cpf')->nullable();
             $table->string('cor')->nullable();
             $table->string('menu')->nullable();
+            $table->string('api_token')->unique();
             $table->boolean('ativo')->nullable($value = true);
             $table->unsignedInteger('contatoid');
             $table->foreign('contatoid')->references('id')->on('contatos');
