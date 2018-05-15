@@ -5603,10 +5603,13 @@ Insert into acaos (id,nome, ativo) values (2,'Administrador->Tipos', true);
 Insert into acaos (id,nome, ativo) values (3,'Administrador->Usuários', true);
 Insert into acaos (id,nome, ativo) values (4,'Administrador->Clientes', true);
 Insert into tipos (id,nome, ativo) values (1,'Administrador', true);
-Insert into acao_tipos (id,tipoid, tipoacao) values (1,1,1);
+Insert into acao_tipos (id,tipoid, acaoid) values (1,1,1);
+Insert into acao_tipos (id,tipoid, acaoid) values (2,1,2);
+Insert into acao_tipos (id,tipoid, acaoid) values (3,1,3);
+Insert into acao_tipos (id,tipoid, acaoid) values (4,1,4);
 Insert into contatos (id,nome) values (1,'Empresa');
 Insert into contato_items (id,nome,telefone,email,contatoid) values (1,'Administrador','(99) 99999-9999','email@email.com',1);
 Insert into empresas (cnpj,razaoSocial, nomeFantasia,cep,endereco,complemento,numero,estado,cidade,ativo,padrao,cor,menu,contatoid) values ('999.999.99999/99','Berna','Berna','99999-999','Barra da Tijuca','',0,'RJ','Rio de Janeiro',true,false,'green','vl',1);
 Insert into contatos (id,nome) values (2,'Usuário');
 Insert into contato_items (id,nome,telefone,email,contatoid) values (2,'Administrador','(99) 99999-9999','email@email.com',2);
-INSERT into usuarios (id,nome,email,senha,foto,cpf,cor,menu,ativo,contatoid,tipoid,empresaid,api_token) values(1,'Administrador','admin@berna.com.br','admin123','','999999999-99','green','vl',true,2,1,1,'a4sd64ad4sad489')
+INSERT into usuarios (id,nome,usuario,senha,foto,cpf,cor,menu,ativo,contatoid,tipoid,empresaid,api_token) values(1,'Administrador','admin','admin123','','999999999-99','green','vl',true,2,1,1,'a4sd64ad4sad489')

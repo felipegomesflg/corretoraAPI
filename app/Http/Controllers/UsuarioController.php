@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use JD\Cloudder\Facades\Cloudder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Usuario;
+use App\AcaoTipo;
 use App\Contato;
 use App\ContatoItem;
 use App\Http\Resources\Usuario as UsuarioResource;
@@ -34,7 +36,7 @@ class UsuarioController extends Controller
         
         $dado->id = $request->input('id');
         $dado->nome = $request->input('nome');
-        $dado->email = $request->input('email');
+        $dado->usuario = $request->input('usuario');
         $dado->senha = $request->input('senha');
         $dado->foto = $request->input('foto');
         $dado->cpf = $request->input('cpf');
@@ -47,10 +49,11 @@ class UsuarioController extends Controller
 
 
         if($dado->foto){
-            $path = 'img/usuario-'.time().".png";
-            Image::make(file_get_contents($dado->foto))->save($path);    
-            $dado->foto = 'http://localhost:8000/'.$path;
+            $path = $request->isMethod('put')? Usuario::findOrFail($request->id)->foto: 'img/usuario-'.time().".jpg";
+            Image::make(file_get_contents($dado->foto))->resize(200, 200)->save($path);    
+            $dado->foto = $path;
         }
+
         //se for put usa o contatoid
         $dado->contatoid = $request->isMethod('put') ? $request->input('contatoid') : 0;
         //se for put pega registro, senao instacia
@@ -96,17 +99,20 @@ class UsuarioController extends Controller
         }
     }
 
-    public function uploadImages($img)
-   {
-    //    $this->validate($request,[
-    //        'image_name'=>'required|mimes:jpeg,bmp,jpg,png|between:1, 6000',
-    //    ]);
-
-       //$image_name = $request->file('image_name')->getRealPath();;
-
-       Cloudder::upload($img, null);
-
-       return redirect()->back()->with('status', 'Image Uploaded Successfully');
-
-   }
+  public function login(Request $request){
+        $dado = Usuario::where([
+            ['usuario','=',$request->usuario],['senha','=',$request->senha],['usuarios.ativo','=',true]
+            ])->select('usuarios.id','usuarios.nome','usuarios.foto','usuarios.cor','usuarios.menu','usuarios.api_token','usuarios.empresaid','usuarios.tipoid','empresas.razaoSocial','empresas.logo')
+            ->join('empresas','usuarios.empresaid','=','empresas.id')->first();
+        if($dado){
+            $acesso =[];
+            $acaotipo = AcaoTipo::where('tipoid',$dado->tipoid)->get();
+            foreach($acaotipo as $item){
+                array_push($acesso ,$item->acaoid);
+            }
+            $dado->acesso = $acesso;
+        }
+        return $dado;
+        
+  }
 }

@@ -53,6 +53,7 @@ Route::get('usuario/{id}', 'UsuarioController@show');
 Route::post('usuario', 'UsuarioController@store');
 Route::put('usuario', 'UsuarioController@store');
 Route::delete('usuario', 'UsuarioController@destroy');
+Route::post('oauth/login', 'UsuarioController@login');
 
 Route::get('estados', 'EstadoController@index');
 Route::get('estado/{id}', 'EstadoController@show');

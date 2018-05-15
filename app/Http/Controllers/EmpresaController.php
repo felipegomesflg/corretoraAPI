@@ -55,10 +55,11 @@ class EmpresaController extends Controller
         $empresa->padrao = $request->input('padrao');
         $empresa->logo = $request->input('logo');
 
+        
         if($empresa->logo){
-            $path = 'img/empresa-'.time().".png";
+            $path = $request->isMethod('put')? Empresa::findOrFail($request->id)->logo: 'img/empresa-'.time().".png";
             Image::make(file_get_contents($empresa->logo))->save($path);    
-            $empresa->logo = 'http://localhost:8000/'.$path;
+            $empresa->logo = $path;
         }
         //se for put usa o contatoid
         $empresa->contatoid = $request->isMethod('put') ? $request->input('contatoid') : 0;

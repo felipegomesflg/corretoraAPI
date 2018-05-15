@@ -17,8 +17,8 @@ class CreateAcaotiposTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('tipoid');
             $table->foreign('tipoid')->references('id')->on('tipos');
-            $table->unsignedInteger('tipoacao');
-            $table->foreign('tipoacao')->references('id')->on('acaos');
+            $table->unsignedInteger('acaoid');
+            $table->foreign('acaoid')->references('id')->on('acaos');
             $table->timestamps();
         });
     }
