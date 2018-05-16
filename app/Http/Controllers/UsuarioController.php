@@ -102,7 +102,7 @@ class UsuarioController extends Controller
   public function login(Request $request){
         $dado = Usuario::where([
             ['usuario','=',$request->usuario],['senha','=',$request->senha],['usuarios.ativo','=',true]
-            ])->select('usuarios.id','usuarios.nome','usuarios.foto','usuarios.cor','usuarios.menu','usuarios.api_token','usuarios.empresaid','usuarios.tipoid','empresas.razaoSocial','empresas.logo')
+            ])->select('usuarios.id','usuarios.nome','usuarios.foto','usuarios.cor','usuarios.menu','usuarios.api_token','usuarios.empresaid','usuarios.tipoid','empresas.razaoSocial','empresas.logo','empresas.padrao')
             ->join('empresas','usuarios.empresaid','=','empresas.id')->first();
         if($dado){
             $acesso =[];
