@@ -38,7 +38,6 @@ class UsuarioController extends Controller
         $dado->nome = $request->input('nome');
         $dado->usuario = $request->input('usuario');
         $dado->senha = $request->input('senha');
-        $dado->foto = $request->input('foto');
         $dado->cpf = $request->input('cpf');
         $dado->cor = $request->input('cor');
         $dado->menu = $request->input('menu');
@@ -47,13 +46,15 @@ class UsuarioController extends Controller
         $dado->api_token = $request->input('tipoid');
         $dado->empresaid = $request->input('empresaid');
 
-
-        if($dado->foto){
-            $path = $request->isMethod('put')? Usuario::findOrFail($request->id)->foto: 'img/usuario-'.time().".jpg";
+        if(strlen($request->foto)>200){
+            $dado->foto = $request->input('foto');
+            $path = $request->isMethod('put')? Usuario::findOrFail($request->id)->foto : "" ;
+            if($path =='')
+            $path ='img/usuario-'.time().".png";
             Image::make(file_get_contents($dado->foto))->resize(200, 200)->save($path);    
             $dado->foto = $path;
         }
-
+        
         //se for put usa o contatoid
         $dado->contatoid = $request->isMethod('put') ? $request->input('contatoid') : 0;
         //se for put pega registro, senao instacia
@@ -76,13 +77,21 @@ class UsuarioController extends Controller
         }
 
         $dado->contatoid = $contato->id; //seta contatoid vindo do post/put do model Contato
-        
         if($dado->save()){
             return new UsuarioResource($dado);
         }
 
     }
 
+    public function preferencia(Request $request)
+    {
+        $dado = Usuario::findOrFail($request->id);
+        $dado->cor = $request->cor;
+        $dado->menu = $request->menu;
+        if($dado->save()){
+            return new UsuarioResource($dado);
+        }
+    }
   
     public function show($id)
     {
@@ -106,9 +115,11 @@ class UsuarioController extends Controller
             'empresas.razaoSocial','empresas.logo','empresas.padrao','empresas.cor as empresacor','empresas.menu as empresamenu','tipos.nome as tipo')
             ->join('empresas','usuarios.empresaid','=','empresas.id')
             ->join('tipos','usuarios.tipoid','=','tipos.id')->first();
-            if($dado->padrao==1)
+            
+            if($dado->padrao==1){
                 $dado->cor = $dado->empresacor;
                 $dado->menu = $dado->menucor;
+            }
         if($dado){
             $acesso =[];
             $acaotipo = AcaoTipo::where('tipoid',$dado->tipoid)->get();

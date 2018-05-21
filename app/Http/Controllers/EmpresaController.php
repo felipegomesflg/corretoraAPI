@@ -57,7 +57,9 @@ class EmpresaController extends Controller
 
         
         if($empresa->logo){
-            $path = $request->isMethod('put')? Empresa::findOrFail($request->id)->logo: 'img/empresa-'.time().".png";
+            $path = $request->isMethod('put')? Empresa::findOrFail($request->id)->logo : "" ;
+            if($path =='')
+            $path ='img/empresa-'.time().".png";
             Image::make(file_get_contents($empresa->logo))->save($path);    
             $empresa->logo = $path;
         }
