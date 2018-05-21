@@ -75,7 +75,7 @@ class UsuarioController extends Controller
             $contatoItem->contatoid = $contato->id;
             $contatoItem->save();
         }
-
+        return $dado;
         $dado->contatoid = $contato->id; //seta contatoid vindo do post/put do model Contato
         if($dado->save()){
             return new UsuarioResource($dado);
@@ -88,6 +88,17 @@ class UsuarioController extends Controller
         $dado = Usuario::findOrFail($request->id);
         $dado->cor = $request->cor;
         $dado->menu = $request->menu;
+
+        if(strlen($request->foto)>200){
+            $dado->foto = $request->input('foto');
+            $path = $request->isMethod('put')? Usuario::findOrFail($request->id)->foto : "" ;
+            if($path =='')
+            $path ='img/usuario-'.time().".png";
+            Image::make(file_get_contents($dado->foto))->resize(200, 200)->save($path);    
+            $dado->foto = $path;
+        }else
+            $dado->foto = $request->foto;
+
         if($dado->save()){
             return new UsuarioResource($dado);
         }
