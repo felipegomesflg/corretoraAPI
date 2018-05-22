@@ -119,17 +119,19 @@ class UsuarioController extends Controller
     }
 
   public function login(Request $request){
+      
         $dado = Usuario::where([
             ['usuario','=',$request->usuario],['senha','=',$request->senha],['usuarios.ativo','=',true]
-            ])->select('usuarios.cpf','usuarios.id','usuarios.nome','usuarios.foto','usuarios.cor','usuarios.menu','usuarios.api_token','usuarios.empresaid','usuarios.tipoid',
+            ])->select('usuarios.cpf','usuarios.usuario','usuarios.id','usuarios.nome','usuarios.foto','usuarios.cor','usuarios.menu','usuarios.api_token','usuarios.empresaid','usuarios.tipoid',
             'empresas.razaoSocial','empresas.logo','empresas.padrao','empresas.cor as empresacor','empresas.menu as empresamenu','tipos.nome as tipo')
             ->join('empresas','usuarios.empresaid','=','empresas.id')
             ->join('tipos','usuarios.tipoid','=','tipos.id')->first();
-            
+                 
             if($dado->padrao==1){
                 $dado->cor = $dado->empresacor;
                 $dado->menu = $dado->menucor;
             }
+            
         if($dado){
             $acesso =[];
             $acaotipo = AcaoTipo::where('tipoid',$dado->tipoid)->get();
