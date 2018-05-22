@@ -75,7 +75,6 @@ class UsuarioController extends Controller
             $contatoItem->contatoid = $contato->id;
             $contatoItem->save();
         }
-        return $dado;
         $dado->contatoid = $contato->id; //seta contatoid vindo do post/put do model Contato
         if($dado->save()){
             return new UsuarioResource($dado);
@@ -111,9 +110,9 @@ class UsuarioController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $dado = Usuario::findOrFail($id);
+        $dado = Usuario::findOrFail($request->id);
         if($dado->delete()){
             return new UsuarioResource($dado);
         }

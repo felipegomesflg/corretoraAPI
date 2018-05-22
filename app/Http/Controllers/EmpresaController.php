@@ -23,7 +23,7 @@ class EmpresaController extends Controller
         foreach($empresas as $empresa){
             $empresa->contato = ContatoItem::where('contatoid',$empresa->contatoid)->get();
         }
-        return new EmpresaResource($empresa);
+        return new EmpresaResource($empresas);
     }
 
   
@@ -113,9 +113,9 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $empresa = Empresa::findOrFail($id);
+        $empresa = Empresa::findOrFail($request->id);
         if($empresa->delete()){
             return new EmpresaResource($empresa);
         }

@@ -57,9 +57,10 @@ class TipoController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $dado = Tipo::findOrFail($id);
+        AcaoTipo::where('tipoid',$request->id)->delete();
+        $dado = Tipo::findOrFail($request->id);
         if($dado->delete()){
             return new TipoResource($dado);
         }
