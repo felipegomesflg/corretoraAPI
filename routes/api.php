@@ -56,6 +56,15 @@ Route::put('usuario/preferencia', 'UsuarioController@preferencia');
 Route::delete('usuario', 'UsuarioController@destroy');
 Route::post('oauth/login', 'UsuarioController@login');
 
+Route::get('clientes', 'ClienteController@index');
+Route::get('cliente/{id}', 'ClienteController@show');
+Route::post('cliente', 'ClienteController@store');
+Route::put('cliente', 'ClienteController@store');
+Route::put('cliente/preferencia', 'ClienteController@preferencia');
+Route::delete('cliente', 'ClienteController@destroy');
+
+Route::get('bancos', 'BancoController@index');
+
 Route::get('estados', 'EstadoController@index');
 Route::get('estado/{id}', 'EstadoController@show');
 Route::post('estado', 'EstadoController@store');

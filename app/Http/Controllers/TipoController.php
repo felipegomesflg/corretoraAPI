@@ -12,7 +12,7 @@ class TipoController extends Controller
 {
  public function index()
     {
-        $dado = Tipo::all();
+        $dado = Tipo::where('ativo',true)->get();;
         foreach($dado as $item){
             $acao =[];
             foreach(AcaoTipo::where('tipoid',$item->id)->get() as $a){

@@ -43,12 +43,6 @@ class EmpresaController extends Controller
         $empresa->cnpj = $request->input('cnpj');
         $empresa->razaoSocial = $request->input('razaoSocial');
         $empresa->nomeFantasia = $request->input('nomeFantasia');
-        $empresa->cep = $request->input('cep');
-        $empresa->endereco = $request->input('endereco');
-        $empresa->complemento = $request->input('complemento');
-        $empresa->numero = $request->input('numero');
-        $empresa->estado = $request->input('estado');
-        $empresa->cidade = $request->input('cidade');
         $empresa->ativo = $request->input('ativo');
         $empresa->cor = $request->input('cor');
         $empresa->menu = $request->input('menu');

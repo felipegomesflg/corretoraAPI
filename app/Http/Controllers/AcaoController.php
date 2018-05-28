@@ -11,7 +11,7 @@ class AcaoController extends Controller
 {
  public function index()
     {
-        return AcaoResource::collection(Acao::all());
+        return AcaoResource::collection(Acao::where('ativo',true)->get());
     }
 
   
@@ -41,7 +41,8 @@ class AcaoController extends Controller
     public function destroy($id)
     {
         $dado = Acao::findOrFail($id);
-        if($dado->delete()){
+        $dado->ativo = false;
+        if($dado->save()){
             return new AcaoResource($dado);
         }
     }

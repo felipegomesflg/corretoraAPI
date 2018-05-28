@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmpresasTable extends Migration
+class CreateEnderecoItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,25 +13,19 @@ class CreateEmpresasTable extends Migration
      */
     public function up()
     {
-        Schema::create('empresas', function (Blueprint $table) {
+        Schema::create('endereco_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('logo', 1000)->nullable();
-            $table->string('cnpj')->nullable();
-            $table->string('razaoSocial')->nullable();
-            $table->string('nomeFantasia')->nullable();
             $table->string('cep')->nullable();
             $table->string('endereco')->nullable();
+            $table->unsignedInteger('enderecoid');
+            $table->foreign('enderecoid')->references('id')->on('enderecos');
             $table->string('complemento')->nullable() ;
             $table->string('numero')->nullable();
             $table->string('estado')->nullable();
             $table->string('cidade')->nullable();
-            $table->boolean('padrao')->default(false);
-            $table->string('cor')->nullable();
-            $table->string('menu')->nullable();
-            $table->unsignedInteger('contatoid');
-            $table->foreign('contatoid')->references('id')->on('contatos');
-            $table->boolean('ativo')->nullable($value = true);
             $table->timestamps();
+            
+            
         });
     }
 
@@ -42,6 +36,6 @@ class CreateEmpresasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('empresas');
+        Schema::dropIfExists('endereco_items');
     }
 }
