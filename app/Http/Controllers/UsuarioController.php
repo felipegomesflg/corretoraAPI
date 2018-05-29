@@ -178,15 +178,15 @@ class UsuarioController extends Controller
                 $dado->cor = $dado->empresacor;
                 $dado->menu = $dado->menucor;
             }
-            
-        if($dado){
-            $acesso =[];
-            $acaotipo = AcaoTipo::where('tipoid',$dado->tipoid)->get();
-            foreach($acaotipo as $item){
-                array_push($acesso ,$item->acaoid);
-            }
-            $dado->acesso = $acesso;
-        }
         return $dado;
+  }
+  public function auth($id){
+    $usuario = Usuario::findOrFail($id)->select('tipoid')->first();
+    $acesso =[];
+    $acaotipo = AcaoTipo::where('tipoid',$usuario->tipoid)->select('acaoid','ver','criar','editar','apagar')->get();
+    foreach($acaotipo as $item){
+        $acesso[$item->acaoid] = $item;
+    }
+    return $acesso;
   }
 }

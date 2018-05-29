@@ -33,17 +33,22 @@ class TipoController extends Controller
         //se for put pega registro, senao instacia
         $dado = $request->isMethod('put') ? Tipo::findOrFail($request->id) : new Tipo;
         $dado->nome = $request->input('nome');
+        $dado->ativo = $request->input('ativo');
 
         //caso seja put apaga todos acessos vindos do banco
         if($request->isMethod('put')){
             AcaoTipo::where('tipoid',$request->id)->delete();
         }
-
+        
         if($dado->save()){
-            foreach($request->acao as $item){//adiciona novas açoes levando id do tipo inserido/editado 
+            foreach($request->acao as $key=>$item){//adiciona novas açoes levando id do tipo inserido/editado 
                 $acao = new AcaoTipo;
                 $acao->tipoid = $dado->id;
-                $acao->acaoid = $item;
+                $acao->acaoid = $key;
+                $acao->ver = $item[0];
+                $acao->criar = $item[1];
+                $acao->editar = $item[2];
+                $acao->apagar = $item[3];
                 $acao->save();
             }
             return new TipoResource($dado);
@@ -62,9 +67,10 @@ class TipoController extends Controller
 
     public function destroy(Request $request)
     {
-        AcaoTipo::where('tipoid',$request->id)->delete();
         $dado = Tipo::findOrFail($request->id);
-        if($dado->delete()){
+        $dado->ativo = false;
+        //if($dado->delete()){
+        if($dado->save()){
             return new TipoResource($dado);
         }
     }

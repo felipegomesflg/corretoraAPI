@@ -50,11 +50,13 @@ Route::delete('acaotipo', 'AcaoTipoController@destroy');
 
 Route::get('usuarios', 'UsuarioController@index');
 Route::get('usuario/{id}', 'UsuarioController@show');
+Route::get('oauth/{id}', 'UsuarioController@auth');
 Route::post('usuario', 'UsuarioController@store');
 Route::put('usuario', 'UsuarioController@store');
 Route::put('usuario/preferencia', 'UsuarioController@preferencia');
 Route::delete('usuario', 'UsuarioController@destroy');
 Route::post('oauth/login', 'UsuarioController@login');
+
 
 Route::get('clientes', 'ClienteController@index');
 Route::get('cliente/{id}', 'ClienteController@show');
