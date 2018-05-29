@@ -16,8 +16,11 @@ class TipoController extends Controller
         foreach($dado as $item){
             $acao =[];
             foreach(AcaoTipo::where('tipoid',$item->id)->get() as $a){
-                array_push($acao ,$a->acaoid);
+                $acao[$a->acaoid] = [$a->ver,$a->criar,$a->editar,$a->apagar];
+                //array_push($acao ,{$a->acaoid : });
             }
+            $acao = json_encode($acao);
+            $acao = json_decode($acao);
             $item->acao = $acao;
         }
         return new TipoResource($dado);
