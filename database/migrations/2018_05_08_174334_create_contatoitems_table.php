@@ -16,8 +16,8 @@ class CreateContatoitemsTable extends Migration
         Schema::create('contato_items', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
-            $table->string('telefone');
-            $table->string('email');
+            $table->string('telefone')->nullable();
+            $table->string('email')->nullable();
             $table->unsignedInteger('contatoid');
             $table->foreign('contatoid')->references('id')->on('contatos');
             $table->timestamps();

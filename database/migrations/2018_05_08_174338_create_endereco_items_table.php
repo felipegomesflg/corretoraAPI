@@ -23,6 +23,7 @@ class CreateEnderecoItemsTable extends Migration
             $table->string('numero')->nullable();
             $table->string('estado')->nullable();
             $table->string('cidade')->nullable();
+            $table->string('bairro')->nullable();
             $table->timestamps();
             
             

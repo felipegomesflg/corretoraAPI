@@ -38,8 +38,10 @@ class ClienteController extends Controller
       
         $dado->id = $request->input('id');
         $dado->nome = $request->input('nome');
-        $dado->cpf = $request->input('cpf');
+        $dado->cpf_cnpj = $request->input('cpf_cnpj');
         $dado->rg = $request->input('rg');
+        $dado->rg_orgao = $request->input('rg_orgao');
+        $dado->rg_data = $request->input('rg_data');
         $dado->sexo = $request->input('sexo');
         $dado->profissao = $request->input('profissao');
         $dado->mae = $request->input('mae');
