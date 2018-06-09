@@ -185,7 +185,8 @@ class UsuarioController extends Controller
             'empresas.razaoSocial','empresas.logo','empresas.padrao','empresas.cor as empresacor','empresas.menu as empresamenu','tipos.nome as tipo')
             ->join('empresas','usuarios.empresaid','=','empresas.id')
             ->join('tipos','usuarios.tipoid','=','tipos.id')->first();
-                 
+        if(!$dado)
+        return '';
             if($dado->padrao==1){
                 $dado->cor = $dado->empresacor;
                 $dado->menu = $dado->menucor;
