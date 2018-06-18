@@ -18,6 +18,7 @@ class CreateContatoitemsTable extends Migration
             $table->string('nome');
             $table->string('telefone')->nullable();
             $table->string('email')->nullable();
+            $table->string('observacao')->nullable();
             $table->unsignedInteger('contatoid');
             $table->foreign('contatoid')->references('id')->on('contatos');
             $table->timestamps();

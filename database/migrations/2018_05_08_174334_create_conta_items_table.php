@@ -22,6 +22,7 @@ class CreateContaItemsTable extends Migration
             $table->unsignedInteger('contaid');
             $table->foreign('contaid')->references('id')->on('contatos');
             $table->string('agencia')->nullable();
+            $table->string('tipo')->nullable();
             $table->string('conta')->nullable();
             $table->timestamps();
         });
