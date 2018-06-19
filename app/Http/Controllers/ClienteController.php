@@ -14,18 +14,25 @@ use App\EnderecoItem;
 use App\Contas;
 use App\ContaItem;
 use App\Http\Resources\Cliente as ClienteResource;
+use App\Http\Resources\ContatoItem as ContatoItemResource;
 
 class ClienteController extends Controller
 {
     public function index()
     {
-        $dado = Cliente::where('ativo',true)->get();
-        // foreach($dado as $item){
-        //     $item->contato = ContatoItem::where('contatoid',$item->contatoid)->get();
-        //     $item->endereco = EnderecoItem::where('enderecoid',$item->enderecoid)->get();
-        //     $item->conta = ContaItem::where('contaid',$item->contaid)->join('bancos','bancos.id','=','conta_items.bancoid')->get();
-        // }
-        return new ClienteResource($dado);
+        $dado = Cliente::where('ativo',true);
+        return datatables($dado)
+        ->addColumn('contato',function($dado){
+            return ContatoItem::where('contatoid',$dado->contatoid)->get();
+        })
+        ->addColumn('endereco',function($dado){
+            return EnderecoItem::where('enderecoid',$dado->enderecoid)->get();
+        })
+        ->addColumn('conta',function($dado){
+            return ContaItem::where('contaid',$dado->contaid)->join('bancos','bancos.id','=','conta_items.bancoid')->get();
+        })
+        ->make(true);
+        //return new ClienteResource($dado);
         
     }
 
