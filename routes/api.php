@@ -63,6 +63,7 @@ Route::get('contaitem/findbycontaid/{id}', 'ContaItemController@findByContaID');
 
 
 Route::get('clientes', 'ClienteController@index');
+Route::get('cliente/select', 'ClienteController@select');
 Route::get('cliente/{id}', 'ClienteController@show');
 Route::post('cliente', 'ClienteController@store');
 Route::put('cliente', 'ClienteController@store');

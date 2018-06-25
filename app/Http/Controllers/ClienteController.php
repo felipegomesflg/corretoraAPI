@@ -36,6 +36,16 @@ class ClienteController extends Controller
         
     }
 
+    public function select(Request $request)
+    {
+        
+        $term = trim($request->q);
+        if (empty($term)) {
+            return DB::table('clientes')->select('id','nome as text')->limit(5)->orderBy('nome')->get();
+        }
+        return Cliente::where('nome','like','%'.$term.'%')->select('id','nome as text')->limit(5)->orderBy('nome')->get();
+    }
+
   
     public function store(Request $request)
     {
