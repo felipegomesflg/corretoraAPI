@@ -10,24 +10,40 @@ use App\Cliente;
 use App\Contato;
 use App\ContatoItem;
 use App\Enderecos;
-use App\EnderecoItems;
+use App\EnderecoItem;
 use App\Contas;
-use App\ContaItems;
+use App\ContaItem;
 use App\Http\Resources\Cliente as ClienteResource;
+use App\Http\Resources\ContatoItem as ContatoItemResource;
 
 class ClienteController extends Controller
 {
     public function index()
     {
-        $dado = Cliente::where('ativo',true)->get();
-
-        foreach($dado as $item){
-            $item->contato = ContatoItem::where('contatoid',$item->contatoid)->get();
-            $item->endereco = EnderecoItems::where('enderecoid',$item->enderecoid)->get();
-            $item->conta = ContaItems::where('contaid',$item->contaid)->join('bancos','bancos.id','=','conta_items.bancoid')->get();
-        }
-        return new ClienteResource($dado);
+        $dado = Cliente::where('ativo',true);
+        return datatables($dado)
+        ->addColumn('contato',function($dado){
+            return ContatoItem::where('contatoid',$dado->contatoid)->get();
+        })
+        ->addColumn('endereco',function($dado){
+            return EnderecoItem::where('enderecoid',$dado->enderecoid)->get();
+        })
+        ->addColumn('conta',function($dado){
+            return ContaItem::where('contaid',$dado->contaid)->join('bancos','bancos.id','=','conta_items.bancoid')->get();
+        })
+        ->make(true);
+        //return new ClienteResource($dado);
         
+    }
+
+    public function select(Request $request)
+    {
+        
+        $term = trim($request->q);
+        if (empty($term)) {
+            return DB::table('clientes')->select('id','nome as text')->limit(5)->orderBy('nome')->get();
+        }
+        return Cliente::where('nome','like','%'.$term.'%')->select('id','nome as text')->limit(5)->orderBy('nome')->get();
     }
 
   
@@ -46,6 +62,8 @@ class ClienteController extends Controller
         $dado->profissao = $request->input('profissao');
         $dado->mae = $request->input('mae');
         $dado->pai = $request->input('pai');
+        $dado->maeID = $request->input('maeID');
+        $dado->paiID = $request->input('paiID');
         $dado->estadoCivil = $request->input('estadoCivil');
         $dado->observacao = $request->input('observacao');
         $dado->nascimento = $request->input('nascimento');
@@ -69,8 +87,8 @@ class ClienteController extends Controller
         
         if($request->isMethod('put')){
             ContatoItem::where('contatoid',$contato->id)->delete();
-            EnderecoItems::where('enderecoid',$endereco->id)->delete();
-            ContaItems::where('contaid',$conta->id)->delete();
+            EnderecoItem::where('enderecoid',$endereco->id)->delete();
+            ContaItem::where('contaid',$conta->id)->delete();
         }
         
         if(count($request->contato)>0){
@@ -79,6 +97,7 @@ class ClienteController extends Controller
                 $contatoItem->nome = $item['nome'];
                 $contatoItem->email = $item['email'];
                 $contatoItem->telefone = $item['telefone'];
+                $contatoItem->observacao = $item['observacao'];
                 $contatoItem->contatoid = $contato->id;
                 $contatoItem->save();
             }
@@ -86,7 +105,7 @@ class ClienteController extends Controller
 
         if(count($request->endereco)>0){
             foreach($request->endereco as $item){
-                $enderecoItem = new EnderecoItems;
+                $enderecoItem = new EnderecoItem;
                 $enderecoItem->cep = $item['cep'];
                 $enderecoItem->endereco = $item['endereco'];
                 $enderecoItem->numero = $item['numero'];
@@ -99,12 +118,13 @@ class ClienteController extends Controller
         }
         if(count($request->conta)>0){
             foreach($request->conta as $item){
-                $contatoItem = new ContaItems;
+                $contatoItem = new ContaItem;
                 $contatoItem->nome = $item['nome'];
                 $contatoItem->cpf = $item['cpf'];
                 $contatoItem->bancoid = $item['bancoid'];
                 $contatoItem->agencia = $item['agencia'];
                 $contatoItem->conta = $item['conta'];
+                $contatoItem->tipo = $item['tipo'];
                 $contatoItem->contaid = $conta->id;
                 $contatoItem->save();
             }

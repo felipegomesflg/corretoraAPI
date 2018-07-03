@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ContaItems extends Model
+class ContaItem extends Model
 {
     //
 }

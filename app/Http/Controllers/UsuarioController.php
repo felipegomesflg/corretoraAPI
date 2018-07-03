@@ -11,9 +11,9 @@ use App\AcaoTipo;
 use App\Contato;
 use App\ContatoItem;
 use App\Enderecos;
-use App\EnderecoItems;
+use App\EnderecoItem;
 use App\Contas;
-use App\ContaItems;
+use App\ContaItem;
 use App\Http\Resources\Usuario as UsuarioResource;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -23,15 +23,18 @@ class UsuarioController extends Controller
 {
  public function index()
     {
-        $dado = Usuario::where('ativo',true)->get();
-
-        foreach($dado as $item){
-            $item->contato = ContatoItem::where('contatoid',$item->contatoid)->get();
-            $item->endereco = EnderecoItems::where('enderecoid',$item->enderecoid)->get();
-            $item->conta = ContaItems::where('contaid',$item->contaid)->join('bancos','bancos.id','=','conta_items.bancoid')->get();
-        }
-        return new UsuarioResource($dado);
-        
+        $dado = Usuario::where('ativo',true);
+        return datatables($dado)
+        ->addColumn('contato',function($dado){
+            return ContatoItem::where('contatoid',$dado->contatoid)->get();
+        })
+        ->addColumn('endereco',function($dado){
+            return EnderecoItem::where('enderecoid',$dado->enderecoid)->get();
+        })
+        ->addColumn('conta',function($dado){
+            return ContaItem::where('contaid',$dado->contaid)->join('bancos','bancos.id','=','conta_items.bancoid')->get();
+        })
+        ->make(true);
     }
 
   

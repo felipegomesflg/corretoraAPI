@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EnderecoItems extends Model
+class EnderecoItem extends Model
 {
     //
 }

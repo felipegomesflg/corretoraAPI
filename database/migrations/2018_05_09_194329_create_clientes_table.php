@@ -24,6 +24,8 @@ class CreateClientesTable extends Migration
             $table->string('profissao')->nullable();
             $table->string('mae')->nullable();
             $table->string('pai')->nullable();
+            $table->integer('maeID')->nullable();
+            $table->integer('paiID')->nullable();
             $table->string('estadoCivil')->nullable();
             $table->string('observacao')->nullable();
             $table->string('nascimento')->nullable();
