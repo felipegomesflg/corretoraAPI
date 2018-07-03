@@ -258,10 +258,9 @@ Insert into acao_tipos (id,tipoid, acaoid,ver,criar,editar,apagar) values (2,1,2
 Insert into acao_tipos (id,tipoid, acaoid,ver,criar,editar,apagar) values (3,1,3,1,1,1,1);
 Insert into acao_tipos (id,tipoid, acaoid,ver,criar,editar,apagar) values (4,1,4,1,1,1,1);
 Insert into contatos (id,nome) values (1,'Empresa');
-Insert into contato_items (id,nome,telefone,email,contatoid) values (1,'Administrador','(99) 99999-9999','email@email.com',1);
 Insert into enderecos (id,nome) values (1,'Empresa');
-Insert into endereco_items (id,cep,endereco,complemento,numero,estado,cidade,enderecoid) values (1,'99999-999','Barra da Tijuca','',0,'RJ','Rio de Janeiro',1);
-Insert into empresas (cnpj,razaoSocial, nomeFantasia,ativo,padrao,cor,menu,contatoid,enderecoid,logo) values ('999.999.99999/99','Berna','Berna',true,false,'green','vl',1,1,'logoBerna.png');
 Insert into contatos (id,nome) values (2,'Usuário');
-Insert into contato_items (id,nome,telefone,email,contatoid) values (2,'Administrador','(99) 99999-9999','email@email.com',2);
-INSERT into usuarios (id,nome,usuario,senha,cpf,cor,menu,ativo,contatoid,tipoid,empresaid,api_token,foto) values(1,'Administrador','admin','admin123','999999999-99','green','vl',true,2,1,1,'a4sd64ad4sad489','fotoADM.png')
+Insert into enderecos (id,nome) values (2,'Usuário');
+Insert into contas (id,nome) values (2,'Usuário');
+Insert into empresas (cnpj,razaoSocial, nomeFantasia,ativo,padrao,cor,menu,contatoid,enderecoid,logo) values ('999.999.99999/99','Berna','Berna',true,false,'green','vl',1,1,'logoBerna.png');
+INSERT into usuarios (id,nome,usuario,senha,cpf,cor,menu,ativo,contatoid,tipoid,empresaid,contaid,api_token,foto) values(1,'Administrador','admin@berna.com.br','admin123','999999999-99','green','vl',true,2,1,1,2,'a4sd64ad4sad489','fotoADM.png')

@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+Route::get('empresas/isNew', 'EmpresaController@isNew');
 Route::get('empresas', 'EmpresaController@index');
 Route::get('empresa/{id}', 'EmpresaController@show');
 Route::post('empresa', 'EmpresaController@store');

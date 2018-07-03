@@ -33,6 +33,15 @@ class EmpresaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function isNew(){
+        $empresas = Empresa::all();
+        if(count($empresas)>0)
+            return 0;
+        else
+            return 1;
+
+    
+    }
     public function store(Request $request)
     {
         //se for put pega registro, senao instacia
