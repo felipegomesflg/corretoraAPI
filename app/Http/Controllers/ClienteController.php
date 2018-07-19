@@ -33,12 +33,12 @@ class ClienteController extends Controller
         })
         ->make(true);
         //return new ClienteResource($dado);
-        
+
     }
 
     public function select(Request $request)
     {
-        
+
         $term = trim($request->q);
         if (empty($term)) {
             return DB::table('clientes')->select('id','nome as text')->limit(5)->orderBy('nome')->get();
@@ -46,12 +46,12 @@ class ClienteController extends Controller
         return Cliente::where('nome','like','%'.$term.'%')->select('id','nome as text')->limit(5)->orderBy('nome')->get();
     }
 
-  
+
     public function store(Request $request)
     {
         //se for put pega registro, senao instacia
         $dado = $request->isMethod('put') ? Cliente::findOrFail($request->id) : new Cliente;
-      
+
         $dado->id = $request->input('id');
         $dado->nome = $request->input('nome');
         $dado->cpf_cnpj = $request->input('cpf_cnpj');
@@ -74,23 +74,23 @@ class ClienteController extends Controller
         $contato = $request->isMethod('put') ? Contato::findOrFail($request['enderecoid']) : new Contato;
         $contato->nome = 'Cliente';
         $contato->save();
-        
+
         $dado->enderecoid = $request->isMethod('put') ? $request->input('enderecoid') : 0;
         $endereco = $request->isMethod('put') ? Enderecos::findOrFail($request['enderecoid']) : new Enderecos;
         $endereco->nome = 'Cliente';
         $endereco->save();
-        
+
         $dado->contaid = $request->isMethod('put') ? $request->input('contaid') : 0;
         $conta = $request->isMethod('put') ? Contas::findOrFail($request['contaid']) : new Contas;
         $conta->nome = 'Cliente';
         $conta->save();
-        
+
         if($request->isMethod('put')){
             ContatoItem::where('contatoid',$contato->id)->delete();
             EnderecoItem::where('enderecoid',$endereco->id)->delete();
             ContaItem::where('contaid',$conta->id)->delete();
         }
-        
+
         if(count($request->contato)>0){
             foreach($request->contato as $item){
                 $contatoItem = new ContatoItem;
@@ -129,9 +129,9 @@ class ClienteController extends Controller
                 $contatoItem->save();
             }
         }
-        $dado->contatoid = $contato->id; 
-        $dado->enderecoid = $endereco->id; 
-        $dado->contaid = $conta->id; 
+        $dado->contatoid = $contato->id;
+        $dado->enderecoid = $endereco->id;
+        $dado->contaid = $conta->id;
         if($dado->save()){
             return new ClienteResource($dado);
         }
